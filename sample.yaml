@@ -1,0 +1,19 @@
+# sample-podrestart.yaml
+apiVersion: operator.example.com/v1alpha1
+kind: PodRestart
+metadata:
+  name: app-restart-rule
+  namespace: default
+spec:
+  podSelector:
+    matchLabels:
+      app: my-application
+  errorPatterns:
+    - "OutOfMemoryError"
+    - "Fatal Exception: java.lang.NullPointerException"
+    - "Connection refused|Connection reset by peer"
+  metricConditions:
+    - name: "container_memory_usage_bytes"
+      threshold: "1073741824"  # 1GB
+      operator: ">"
+  minTimeBetweenRestarts: "5m"
